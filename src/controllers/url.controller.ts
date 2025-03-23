@@ -16,7 +16,7 @@ export const shortenUrlPost = async (req: Request, res: Response) => {
   const existingUrl = await Url.findOne({ originalUrl });
   if (existingUrl) {
     return res.json({
-      shortenedUrl: `http://s.keunheekwon.xyz/${existingUrl.shortenedUrl}`,
+      shortenedUrl: `https://s.keunheekwon.xyz/${existingUrl.shortenedUrl}`,
     });
   }
 
@@ -33,7 +33,7 @@ export const shortenUrlPost = async (req: Request, res: Response) => {
 
   try {
     await newUrl.save();
-    return res.json({ shortenedUrl: `http://s.keunheekwon.xyz/${shortenedUrl}` });
+    return res.json({ shortenedUrl: `https://s.keunheekwon.xyz/${shortenedUrl}` });
   } catch (error) {
     return res.status(500).json({ error: "Error saving URL" });
   }
