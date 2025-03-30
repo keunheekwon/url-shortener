@@ -34,11 +34,21 @@
       margin-top: 10px;
       color: #4CAF50;
     }
+    .login-form {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>URL Shortener</h2>
+    <div class="login-form">
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+    </div>
     <form id="urlForm">
       <input type="url" id="originalUrl" placeholder="Enter URL to shorten" required />
       <input type="text" id="customUrl" placeholder="Enter custom shortened URL (optional)" />
@@ -48,8 +58,22 @@
   </div>
 
   <script>
+    let currentUser = null;
+
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      currentUser = { username, password };
+      alert('Logged in successfully!');
+    }
+
     document.getElementById('urlForm').addEventListener('submit', async function(event) {
       event.preventDefault();
+
+      if (!currentUser) {
+        document.getElementById('shortenedUrl').innerHTML = '<p>Please login first</p>';
+        return;
+      }
 
       const originalUrl = document.getElementById('originalUrl').value;
       const customUrl = document.getElementById('customUrl').value;
@@ -59,6 +83,8 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'username': currentUser.username,
+            'password': currentUser.password
           },
           body: JSON.stringify({ originalUrl, customUrl }),
         });
