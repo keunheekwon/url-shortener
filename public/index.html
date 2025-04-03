@@ -1,108 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Shortener</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f0f0;
-    }
-    .container {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      max-width: 400px;
-      width: 100%;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    #shortenedUrl {
-      margin-top: 10px;
-      color: #4CAF50;
-    }
-    .login-form {
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #ccc;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>URL Shortener</h2>
-    <div class="login-form">
-      <input type="text" id="username" placeholder="Username" />
-      <input type="password" id="password" placeholder="Password" />
-      <button onclick="login()">Login</button>
-    </div>
-    <form id="urlForm">
-      <input type="url" id="originalUrl" placeholder="Enter URL to shorten" required />
-      <input type="text" id="customUrl" placeholder="Enter custom shortened URL (optional)" />
-      <button type="submit">Shorten URL</button>
-    </form>
-    <div id="shortenedUrl"></div>
-  </div>
-
-  <script>
-    let currentUser = null;
-
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      currentUser = { username, password };
-      alert('Logged in successfully!');
-    }
-
-    document.getElementById('urlForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-
-      if (!currentUser) {
-        document.getElementById('shortenedUrl').innerHTML = '<p>Please login first</p>';
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <style>
+      body {
+        font-family: "Segoe UI", -apple-system, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       }
+      .container {
+        background-color: white;
+        padding: 2.5rem;
+        border-radius: 16px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        max-width: 450px;
+        width: 90%;
+      }
+      h2 {
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border: 2px solid #e0e0e0;
+        transition: border-color 0.3s ease;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+      input:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        margin: 16px 0;
+        border-radius: 8px;
+        border: none;
+        background: #3498db;
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background: #2980b9;
+      }
+      #shortenedUrl {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+      }
+      #shortenedUrl a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      #shortenedUrl a:hover {
+        text-decoration: underline;
+      }
+      .login-form {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>URL Shortener</h2>
+      <form id="urlForm">
+        <input
+          type="url"
+          id="originalUrl"
+          placeholder="Enter URL to shorten"
+          required
+        />
+        <input
+          type="text"
+          id="customUrl"
+          placeholder="Enter custom shortened URL (optional)"
+        />
+        <button type="submit">Shorten URL</button>
+      </form>
+      <div id="shortenedUrl"></div>
+    </div>
 
-      const originalUrl = document.getElementById('originalUrl').value;
-      const customUrl = document.getElementById('customUrl').value;
+    <script>
+      document
+        .getElementById("urlForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
 
-      try {
-        const response = await fetch('/shorten', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'username': currentUser.username,
-            'password': currentUser.password
-          },
-          body: JSON.stringify({ originalUrl, customUrl }),
-        });
+          const originalUrl = document.getElementById("originalUrl").value;
+          const customUrl = document.getElementById("customUrl").value;
 
-        const data = await response.json();
+          try {
+            const response = await fetch("/shorten", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ originalUrl, customUrl }),
+            });
 
-        if (data.shortenedUrl) {
-          document.getElementById('shortenedUrl').innerHTML = `
+            const data = await response.json();
+
+            if (data.shortenedUrl) {
+              document.getElementById("shortenedUrl").innerHTML = `
             <p>Your shortened URL is:</p>
             <a href="${data.shortenedUrl}" target="_blank">${data.shortenedUrl}</a>
           `;
-        } else {
-          document.getElementById('shortenedUrl').innerHTML = `<p>Error: ${data.error}</p>`;
-        }
-      } catch (error) {
-        document.getElementById('shortenedUrl').innerHTML = `<p>Error: ${error.message}</p>`;
-      }
-    });
-  </script>
-</body>
+            } else {
+              document.getElementById(
+                "shortenedUrl"
+              ).innerHTML = `<p>Error: ${data.error}</p>`;
+            }
+          } catch (error) {
+            document.getElementById(
+              "shortenedUrl"
+            ).innerHTML = `<p>Error: ${error.message}</p>`;
+          }
+        });
+    </script>
+  </body>
 </html>
