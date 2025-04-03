@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import Url from "../models/url.model";
 import { generateShortenedUrl } from "../utils/url.utils";
 
-// POST 요청을 통한 URL 단축
 export const shortenUrlPost = async (req: Request, res: Response) => {
   const { originalUrl, customUrl } = req.body;
 
@@ -12,7 +11,6 @@ export const shortenUrlPost = async (req: Request, res: Response) => {
       .json({ error: "Original URL is required and must be a string" });
   }
 
-  // 기존 URL이 있는지 확인
   const existingUrl = await Url.findOne({ originalUrl });
   if (existingUrl) {
     return res.json({
@@ -20,7 +18,6 @@ export const shortenUrlPost = async (req: Request, res: Response) => {
     });
   }
 
-  // 단축된 URL 생성
   const shortenedUrl =
     customUrl && typeof customUrl === "string"
       ? customUrl
@@ -39,7 +36,6 @@ export const shortenUrlPost = async (req: Request, res: Response) => {
   }
 };
 
-// URL 리다이렉트 API
 export const redirectUrl = async (req: Request, res: Response) => {
   const { shortenedUrl } = req.params;
 
