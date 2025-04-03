@@ -5,6 +5,6 @@ export const generateShortenedUrl = (originalUrl: string): string => {
     .createHash("sha256")
     .update(originalUrl)
     .digest("hex")
-    .slice(0, 8);
+    .slice(0, 6);
   return hash;
 };
